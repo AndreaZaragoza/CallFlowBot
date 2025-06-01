@@ -19,3 +19,23 @@ Request:
 {
   "transcript": "Can you tell me your pricing?"
 }
+```
+
+## Diagram
+
+```
++--------------+         +-----------------------+
+|  User input  | ---->   | /twilio-webhook route |
++--------------+         +-----------------------+
+                               |
+                               v
+                   +----------------------+
+                   |  agent_logic.py AI   |
+                   |  response simulator  |
+                   +----------------------+
+                               |
+                               v
+                        +------------+
+                        |  Response  |
+                        +------------+
+```
