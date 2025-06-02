@@ -1,4 +1,4 @@
-# CallFlowBot
+# CallFlowBot (v1.1)
 A minimal AI call agent demo built with Flask. It simulates the behavior of a voice assistant that responds with helpful, human-like answers; designed to reflect real-world AI integrations like those used in customer service automation. Built as a sample project to demonstrate my interest in AI deployment, API integrations, and user-centric design.
 
 **CallFlowBot** is a simulated AI call agent demo built with Flask. It mimics the behavior of a voice-based AI assistant by processing a mock Twilio webhook request and generating friendly, human-like responses.
@@ -39,3 +39,13 @@ Request:
                         |  Response  |
                         +------------+
 ```
+
+
+## LLM Integration
+This version of CallFlowBot attempts to use OpenAI's GPT-3.5 API to generate real-time, human-like responses in a friendly “Bland tone.” If API quota is unavailable or fails, the app gracefully falls back to a scripted response engine.
+
+- Uses `openai` Python SDK v1.x
+- Custom prompt injected into `system` role
+- Scripted fallback ensures consistent response reliability
+
+🔐 API keys are stored securely in a `.env` file (not included in repo).
