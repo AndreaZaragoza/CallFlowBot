@@ -3,6 +3,10 @@ from agent_logic import generate_response
 
 app = Flask(__name__)
 
+import logging
+
+logging.basicConfig(filename='callflowbot.log', level=logging.INFO)
+
 @app.route("/twilio-webhook", methods=["POST"])
 def twilio_webhook():
     data = request.get_json()
@@ -12,6 +16,9 @@ def twilio_webhook():
         return jsonify({"error": "Missing 'transcript' in request."}), 400
 
     print(f"Received: {user_message}")
+
+    logging.info(f"User said: {user_message}")  # basic logging to capture user input
+
     response = generate_response(user_message)
     print(f"Response: {response}")  # debugging / troubleshooting not getting output when run curl command
     return jsonify({"response": response})
