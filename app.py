@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from agent_logic import generate_response
+from flask import render_template
 
 app = Flask(__name__)
 
@@ -26,6 +27,10 @@ def twilio_webhook():
 @app.route("/")
 def home():
     return "CallFlowBot is running."
+
+@app.route("/chat")
+def chat_ui():
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)  # Adding port 5001 here because my previous request to localhost:5000, is going to AirPlay, not my Flask app
