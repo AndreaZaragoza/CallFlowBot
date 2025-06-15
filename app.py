@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from agent_logic import generate_response
 from flask import render_template
+from logger import log_interaction
 
 app = Flask(__name__)
 
@@ -21,6 +22,7 @@ def twilio_webhook():
     logging.info(f"User said: {user_message}")  # basic logging to capture user input
 
     response = generate_response(user_message)
+    log_interaction(user_message, response)  # Phase 3 logging system to track user inputs and bot replies
     print(f"Response: {response}")  # debugging / troubleshooting not getting output when run curl command
     return jsonify({"response": response})
 
