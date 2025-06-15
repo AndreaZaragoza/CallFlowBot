@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from agent_logic import generate_response
 from flask import render_template
 from logger import log_interaction
+import os
 
 app = Flask(__name__)
 
@@ -34,6 +35,14 @@ def home():
 def chat_ui():
     return render_template("index.html")
 
+# Update to use the Render assigned port
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5001))  # fallback to 5001 for local dev
+    app.run(host="0.0.0.0", port=port, debug=True)
+
+'''
 if __name__ == "__main__":
     app.run(debug=True, port=5001)  # Adding port 5001 here because my previous request to localhost:5000, is going to AirPlay, not my Flask app
-                         # Apple's AirPlay service uses port 5000 by default on macOS
+                                    # Apple's AirPlay service uses port 5000 by default on macOS
+'''
