@@ -42,7 +42,9 @@
 
 ## 🌁 Preview
 
-![Preview UI](callflowbot-preview.png)
+[![Preview](callflowbot-preview.png)](https://callflowbot.onrender.com/chat)
+
+<!-- ![Preview UI](callflowbot-preview.png) -->
 
 ---
 
