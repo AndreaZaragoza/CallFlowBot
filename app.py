@@ -4,6 +4,7 @@ from agent_logic import generate_response
 from flask import render_template
 from logger import log_interaction
 import os
+from collections import Counter
 
 app = Flask(__name__)
 
@@ -46,6 +47,24 @@ def show_logs():
         logs = []
 
     return render_template("logs.html", logs=logs)
+
+
+@app.route("/dashboard")
+def dashboard():
+    try:
+        with open("interaction_log.json", "r") as f:
+            logs = [json.loads(line.strip()) for line in f.readlines()]
+    except FileNotFoundError:
+        logs = []
+
+    total = len(logs)
+    fallback = sum(1 for log in logs if "fallback" in log["bot_response"].lower())
+    fallback_pct = round((fallback / total * 100), 1) if total else 0
+
+    user_inputs = [log["user_input"].strip().lower() for log in logs]
+    top_questions = Counter(user_inputs).most_common(3)
+
+    return render_template("dashboard.html", total=total, fallback=fallback, fallback_pct=fallback_pct, top_questions=top_questions)
 
 # Update to use the Render assigned port
 

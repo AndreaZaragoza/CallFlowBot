@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CallFlowBot Analytics</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; background: #f9f9f9; }
+        h1 { margin-bottom: 20px; }
+        ul { font-size: 1.1em; }
+        .stat { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>📊 CallFlowBot – Analytics</h1>
+    <div class="stat"><strong>Total Messages:</strong> {{ total }}</div>
+    <div class="stat"><strong>Fallback Responses:</strong> {{ fallback }} ({{ fallback_pct }}%)</div>
+
+    <h2>🗣 Top 3 Most Common Questions</h2>
+    <ul>
+        {% for phrase, count in top_questions %}
+        <li>{{ phrase }} — {{ count }} times</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
