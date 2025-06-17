@@ -1,3 +1,4 @@
+import json
 from flask import Flask, request, jsonify
 from agent_logic import generate_response
 from flask import render_template
@@ -34,6 +35,17 @@ def home():
 @app.route("/chat")
 def chat_ui():
     return render_template("index.html")
+
+@app.route("/logs")
+def show_logs():
+    try:
+        with open("interaction_log.json", "r") as f:
+            lines = f.readlines()[-10:]  # show last 10
+            logs = [json.loads(line.strip()) for line in lines]
+    except FileNotFoundError:
+        logs = []
+
+    return render_template("logs.html", logs=logs)
 
 # Update to use the Render assigned port
 

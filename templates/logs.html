@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CallFlowBot Logs</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; background: #f9f9f9; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px 12px; border: 1px solid #ccc; }
+        th { background: #0078D4; color: white; }
+        tr:nth-child(even) { background: #f1f1f1; }
+        h1 { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>CallFlowBot – Recent Logs</h1>
+    <table>
+        <tr>
+            <th>Timestamp</th>
+            <th>User Input</th>
+            <th>Bot Response</th>
+        </tr>
+        {% for entry in logs %}
+        <tr>
+            <td>{{ entry.timestamp }}</td>
+            <td>{{ entry.user_input }}</td>
+            <td>{{ entry.bot_response }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
