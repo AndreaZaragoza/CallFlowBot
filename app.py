@@ -5,6 +5,7 @@ from flask import render_template
 from logger import log_interaction
 import os
 from collections import Counter
+from flask import Response
 
 app = Flask(__name__)
 
@@ -65,6 +66,22 @@ def dashboard():
     top_questions = Counter(user_inputs).most_common(3)
 
     return render_template("dashboard.html", total=total, fallback=fallback, fallback_pct=fallback_pct, top_questions=top_questions)
+
+@app.route("/download-logs")
+def download_logs():
+    try:
+        with open("interaction_log.json", "r") as f:
+            logs = [json.loads(line.strip()) for line in f]
+    except FileNotFoundError:
+        logs = []
+
+    def generate():
+        yield "timestamp,user_input,bot_response\n"
+        for log in logs:
+            yield f'"{log["timestamp"]}","{log["user_input"]}","{log["bot_response"]}"\n'
+
+    return Response(generate(), mimetype="text/csv",
+                    headers={"Content-Disposition": "attachment;filename=callflowbot_logs.csv"})
 
 # Update to use the Render assigned port
 
