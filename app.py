@@ -102,6 +102,10 @@ def download_logs():
     return Response(generate(), mimetype="text/csv",
                     headers={"Content-Disposition": "attachment;filename=callflowbot_logs.csv"})
 
+@app.route("/demo")
+def demo():
+    return render_template("demo.html")
+
 # Update to use the Render assigned port
 
 if __name__ == "__main__":
