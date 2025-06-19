@@ -6,6 +6,10 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def generate_response(user_input):
+    # Manual fallback trigger for demo purposes
+    if "__trigger_fallback__" in user_input.lower():
+        return "Sorry, I'm having trouble responding right now."
+
     try:
         completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -17,8 +21,6 @@ def generate_response(user_input):
         )
         return completion.choices[0].message.content.strip()
     except Exception as e:
-        # print(f"OpenAI API error: {e}")
-        # return "Sorry, I'm having trouble responding right now."
         print("OpenAI API error:", e)
         print("Falling back to scripted logic.")
         return fallback_scripted_response(user_input)
