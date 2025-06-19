@@ -17,6 +17,7 @@ logging.basicConfig(filename='callflowbot.log', level=logging.INFO)
 def twilio_webhook():
     data = request.get_json()
     user_message = data.get("transcript", "")
+    session_id = data.get("session_id", "unknown")
 
     if not user_message:
         return jsonify({"error": "Missing 'transcript' in request."}), 400
@@ -26,7 +27,7 @@ def twilio_webhook():
     logging.info(f"User said: {user_message}")  # basic logging to capture user input
 
     response = generate_response(user_message)
-    log_interaction(user_message, response)  # Phase 3 logging system to track user inputs and bot replies
+    log_interaction(user_message, response, session_id)  # Phase 3 logging system to track user inputs and bot replies
     print(f"Response: {response}")  # debugging / troubleshooting not getting output when run curl command
     return jsonify({"response": response})
 
@@ -49,14 +50,26 @@ def show_logs():
 
     return render_template("logs.html", logs=logs)
 
-
 @app.route("/dashboard")
 def dashboard():
+    session_filter = request.args.get("session_id")
+
     try:
         with open("interaction_log.json", "r") as f:
             logs = [json.loads(line.strip()) for line in f.readlines()]
     except FileNotFoundError:
         logs = []
+
+    # Gather all unique session IDs
+    # session_ids = sorted(set(log["session_id"] for log in logs))
+    session_ids = sorted(set(log.get("session_id", "unknown") for log in logs))
+
+    # fixes for log entries in interaction_log.json that don’t have a session_id 
+    # field likely from old logs from before Phase 7. ^ ˇ
+    if session_filter:
+        # logs = [log for log in logs if log["session_id"] == session_filter]
+        logs = [log for log in logs if log.get("session_id") == session_filter]
+
 
     total = len(logs)
     fallback = sum(1 for log in logs if "fallback" in log["bot_response"].lower())
@@ -65,7 +78,13 @@ def dashboard():
     user_inputs = [log["user_input"].strip().lower() for log in logs]
     top_questions = Counter(user_inputs).most_common(3)
 
-    return render_template("dashboard.html", total=total, fallback=fallback, fallback_pct=fallback_pct, top_questions=top_questions)
+    return render_template("dashboard.html",
+                           total=total,
+                           fallback=fallback,
+                           fallback_pct=fallback_pct,
+                           top_questions=top_questions,
+                           session_ids=session_ids,
+                           selected_id=session_filter)
 
 @app.route("/download-logs")
 def download_logs():

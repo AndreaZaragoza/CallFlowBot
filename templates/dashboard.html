@@ -11,6 +11,15 @@
 </head>
 <body>
     <h1>📊 CallFlowBot – Analytics</h1>
+    <form method="get" action="/dashboard">
+        <label for="sessionSelect"><strong>Filter by session:</strong></label>
+        <select name="session_id" id="sessionSelect" onchange="this.form.submit()">
+            <option value="">(Show all)</option>
+            {% for sid in session_ids %}
+                <option value="{{ sid }}" {% if sid == selected_id %}selected{% endif %}>{{ sid }}</option>
+            {% endfor %}
+        </select>
+    </form>    
     <div class="stat"><strong>Total Messages:</strong> {{ total }}</div>
     <div class="stat"><strong>Fallback Responses:</strong> {{ fallback }} ({{ fallback_pct }}%)</div>
     <p><a href="/download-logs" target="_blank">⬇️ Download Logs as CSV</a></p>

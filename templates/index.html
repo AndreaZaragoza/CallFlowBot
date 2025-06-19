@@ -16,18 +16,24 @@
     </div>
 
     <script>
+        if (!localStorage.getItem("session_id")) {
+            const id = crypto.randomUUID();
+            localStorage.setItem("session_id", id);
+        }
+    
         async function sendMessage() {
             const input = document.getElementById('userInput').value;
-
+            const sessionId = localStorage.getItem("session_id");
+    
             const res = await fetch("/twilio-webhook", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ transcript: input })
+                body: JSON.stringify({ transcript: input, session_id: sessionId })
             });
-
+    
             const data = await res.json();
             document.getElementById('responseArea').innerText = data.response;
         }
-    </script>
+    </script>    
 </body>
 </html>
