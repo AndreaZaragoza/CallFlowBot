@@ -39,6 +39,10 @@ def fallback_scripted_response(user_input):
         return "Absolutely — I’ll connect you with a team member now."
     elif "thank you" in user_input:
         return "You're very welcome! Is there anything else I can help with today?"
+    elif "voice mode enabled" in user_input.lower():
+        return "Sure! I’ll speak clearly and slowly now."
+    elif "voice mode disabled" in user_input.lower():
+        return "Voice mode turned off. I’ll respond normally."
     else:
         return "Got it! I’m here to help — could you tell me a bit more so I can better assist you?"
 
